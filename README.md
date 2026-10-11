@@ -2,7 +2,7 @@
 
 [![Arduino Library](https://img.shields.io/badge/Arduino-Library-blue.svg)](https://www.arduino.cc/reference/en/libraries/)
 [![CMake](https://img.shields.io/badge/CMake-Supported-blue.svg)](https://cmake.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-green.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 TinyPPP is a header-only Arduino library for IP networking with PPP (Point-to-Point Protocol). It runs over any Arduino `Stream`, such as USB serial, a hardware UART or anything else that implements `Stream`. The library plugs into the network API of the Arduino core, so the usual client, server and UDP classes work over the PPP link.
 
