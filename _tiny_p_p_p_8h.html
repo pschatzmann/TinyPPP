@@ -74,12 +74,43 @@ $(function() {
 </div>
 </div><!-- top -->
 <div class="header">
+  <div class="summary">
+<a href="#define-members">Macros</a>  </div>
   <div class="headertitle"><div class="title">TinyPPP.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="_tiny_p_p_p___generic_8h_source.html">tinyppp/TinyPPP_Generic.h</a>&quot;</code><br />
 </div>
 <p><a href="_tiny_p_p_p_8h_source.html">Go to the source code of this file.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a8b89b39049149c22fd999ebdd857b166" id="r_a8b89b39049149c22fd999ebdd857b166"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_tiny_p_p_p_8h.html#a8b89b39049149c22fd999ebdd857b166">PP_USE_NAMESPACE</a>&#160;&#160;&#160;true</td></tr>
+<tr class="separator:a8b89b39049149c22fd999ebdd857b166"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a8b89b39049149c22fd999ebdd857b166" name="a8b89b39049149c22fd999ebdd857b166"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8b89b39049149c22fd999ebdd857b166">&#9670;&#160;</a></span>PP_USE_NAMESPACE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define PP_USE_NAMESPACE&#160;&#160;&#160;true</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>TinyPPP: header only PPP (Point-to-Point Protocol) networking over any Arduino Stream (USB serial, UART, ...).</p>
+<ul>
+<li>ESP32 (all variants): uses the PPP implementation of ESP-IDF lwIP via esp_netif and integrates into the Arduino Network API (NetworkInterface, NetworkClient, NetworkServer, NetworkUDP, Network.onEvent()).</li>
+<li>RP2040 / RP2350 (Earle Philhower core): uses the TinyPPP engine on a lwIP netif and integrates with WiFiClient, WiFiServer, WiFiUDP, ...</li>
+<li>All other 32-bit cores, e.g. SAMD and mbed based WiFiNINA boards (Nano 33 IoT, MKR WiFi 1010, Nano RP2040 Connect), UNO R4 and the desktop (Arduino-Emulator): the TinyPPP engine with a small built-in TCP/IP stack (TCP, UDP, ICMP echo, DNS) that provides PPPClient, PPPServer and PPPUDP.</li>
+</ul>
+<p>On ESP32 and RP2040 PPPClient, PPPServer and PPPUDP are aliases for the native classes, so the same sketch builds on all platforms.</p>
+<p>Define PPP_PREFER_GENERIC (before the include or as build flag) to use the generic implementation on ESP32 and RP2040 as well. </p>
+
+</div>
+</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
