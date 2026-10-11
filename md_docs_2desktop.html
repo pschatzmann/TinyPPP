@@ -86,11 +86,13 @@ $(function() {
 <li>the passive/server role</li>
 <li>the built-in TCP/IP stack between two instances: TCP connect, accept, a 20 KB transfer in both directions, close, connection refused and link loss; reuse of sockets; UDP; DNS</li>
 </ul>
-<p><code>build/examples/desktop/ppp-pty</code> runs the engine on a pseudo terminal, so you can connect the real pppd to it and ping it:</p>
-<div class="fragment"><div class="line">./build/examples/desktop/ppp-pty     # prints e.g. &quot;pty: /dev/pts/5&quot; (macOS: &quot;pty: /dev/ttys005&quot;)</div>
-<div class="line">sudo pppd /dev/pts/5 115200 192.168.77.1:192.168.77.2 noauth local nodetach novj noccp</div>
+<p>The desktop examples in <a href="../examples/desktop">examples/desktop</a> are regular Arduino sketches (<code>setup()</code> and <code>loop()</code>). They are built with <code>arduino_sketch()</code> from the Arduino-Emulator's <code>Arduino.cmake</code>, and the emulator provides <code>main()</code>.</p>
+<p><code>build/examples/desktop/ppp-pty</code> (<a href="../examples/desktop/ppp-pty/ppp-pty.ino">ppp-pty.ino</a>) runs PPP over <code>Serial</code>, which is stdin/stdout in the emulator. With its <code>pty</code> option, pppd starts the sketch on a pseudo terminal, so you can connect the real pppd to it and ping it:</p>
+<div class="fragment"><div class="line">cd build/examples/desktop</div>
+<div class="line">sudo pppd pty &quot;./ppp-pty&quot; 192.168.77.1:192.168.77.2 noauth local nodetach novj noccp nodefaultroute</div>
 <div class="line">ping 192.168.77.2</div>
-</div><!-- fragment --><p>The GitHub workflow <a href="../.github/workflows/desktop.yml">desktop.yml</a> builds and runs the tests on Ubuntu and macOS. </p>
+</div><!-- fragment --><p>pppd runs the command with the rights of the user who started pppd. Because stdout carries PPP, the sketch writes its log to stderr. Set <code>PPP_TIMEOUT</code> (seconds) to stop it automatically, e.g. <code>pty "env PPP_TIMEOUT=60 ./ppp-pty"</code>.</p>
+<p>The GitHub workflow <a href="../.github/workflows/desktop.yml">desktop.yml</a> builds and runs the tests on Ubuntu and macOS. </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 <!-- start footer part -->

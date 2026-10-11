@@ -186,12 +186,12 @@ Robustness</h2>
 </ul>
 <h1><a class="anchor" id="autotoc_md16"></a>
 2. Interop Tests with pppd</h1>
-<p>Script these with <code>ppp-pty</code> and <code>PPP_TIMEOUT</code> on the Ubuntu runner (<code>sudo apt-get install ppp</code>, passwordless <code>sudo</code> is available):</p>
+<p>Script these with <code>ppp-pty</code> (started by pppd with <code>pty "env PPP_TIMEOUT=60 ./ppp-pty"</code>, its log goes to stderr) on the Ubuntu runner (<code>sudo apt-get install ppp</code>, passwordless <code>sudo</code> is available):</p>
 <table class="markdownTable">
 <tr class="markdownTableHead">
 <th class="markdownTableHeadNone">Case   </th><th class="markdownTableHeadNone">pppd options   </th><th class="markdownTableHeadNone">Pass criteria    </th></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">Basic link   </td><td class="markdownTableBodyNone"><code>192.168.77.1:192.168.77.2 noauth local nodetach novj noccp</code>   </td><td class="markdownTableBodyNone"><code>connected:</code> line, <code>ping -c 5 192.168.77.2</code> gets 0 % loss    </td></tr>
+<td class="markdownTableBodyNone">Basic link   </td><td class="markdownTableBodyNone"><code>pty "./ppp-pty" 192.168.77.1:192.168.77.2 noauth local nodetach novj noccp</code>   </td><td class="markdownTableBodyNone"><code>connected:</code> line, <code>ping -c 5 192.168.77.2</code> gets 0 % loss    </td></tr>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">Large packets   </td><td class="markdownTableBodyNone">as above   </td><td class="markdownTableBodyNone"><code>ping -s 1472 -M do</code> succeeds    </td></tr>
 <tr class="markdownTableRowOdd">
@@ -203,7 +203,7 @@ Robustness</h2>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">Keep-alive   </td><td class="markdownTableBodyNone"><code>lcp-echo-interval 1 lcp-echo-failure 3</code>   </td><td class="markdownTableBodyNone">link stays up for 60 s    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">Peer restart   </td><td class="markdownTableBodyNone">kill pppd, start it again   </td><td class="markdownTableBodyNone"><code>disconnected</code>, then <code>connected</code> again with no restart of <code>ppp-pty</code>    </td></tr>
+<td class="markdownTableBodyNone">Peer exit   </td><td class="markdownTableBodyNone">kill pppd   </td><td class="markdownTableBodyNone"><code>ppp-pty</code> exits as well (no process left behind)    </td></tr>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">Engine restart   </td><td class="markdownTableBodyNone">stop <code>ppp-pty</code> (PPP_TIMEOUT), start it again   </td><td class="markdownTableBodyNone">pppd reconnects (with <code>persist</code>)   </td></tr>
 </table>
