@@ -32,13 +32,4 @@ cd  ~/Documents/Arduino/libraries
 git clone https://github.com/pschatzmann/TinyPPP.git
 ```
 
-This project can also be built and executed on your desktop (Linux, macOS) with cmake (see [Desktop Build and Tests](docs/desktop.md)):
-
-```
-cd TinyPPP
-mkdir build
-cd build
-cmake ..
-make
-```
 
