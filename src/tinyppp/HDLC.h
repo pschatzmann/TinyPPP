@@ -109,7 +109,13 @@ class HDLCEncoder {
   }
 
   void flush() {
-    if (_len == 0 || _out == nullptr) return;
+    if (_len == 0) return;
+    if (_out == nullptr) {
+      // no output: drop the data (the buffer must be emptied in any case)
+      _ok = false;
+      _len = 0;
+      return;
+    }
     size_t written = 0;
     // some cores return partial writes: retry a few times
     for (int retry = 0; retry < 50 && written < _len; retry++) {
