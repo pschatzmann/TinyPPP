@@ -1,0 +1,27 @@
+var searchData=
+[
+  ['cases_20per_20board_0',['Cases (per board)',['../md_docs_2testing.html#autotoc_md20',1,'']]],
+  ['cases_20to_20add_1',['Cases to add',['../md_docs_2testing.html#autotoc_md14',1,'']]],
+  ['checklist_2',['Release Checklist',['../md_docs_2testing.html#autotoc_md21',1,'']]],
+  ['checksum_3',['Checksum',['../classtinyppp_1_1_checksum.html',1,'tinyppp']]],
+  ['clear_4',['clear',['../classtinyppp_1_1_ring_buffer.html#ac8bb3912a3ce86b15842e79d0b421204',1,'tinyppp::RingBuffer']]],
+  ['closed_5',['Closed',['../namespacetinyppp.html#a38a711abd3725ba51fbc6582286cff7ba03f4a47830f97377a35321051685071e',1,'tinyppp']]],
+  ['closewait_6',['CloseWait',['../namespacetinyppp.html#a38a711abd3725ba51fbc6582286cff7bad976b2c6bcd08973753e6ea6805a42be',1,'tinyppp']]],
+  ['closing_7',['closing',['../namespacetinyppp.html#a3a4291819457ab41bb97e383ddc4be2da5c8de6f894682fdb1786037b2040a26e',1,'tinyppp::Closing'],['../namespacetinyppp.html#a38a711abd3725ba51fbc6582286cff7ba5c8de6f894682fdb1786037b2040a26e',1,'tinyppp::Closing']]],
+  ['cmd_8',['Cmd',['../class_tiny_p_p_p___r_p2040.html#a79c982fc3d0063d69f34ab8b6e248371',1,'TinyPPP_RP2040']]],
+  ['code_5frej_9',['CODE_REJ',['../namespacetinyppp.html#a29367f15060152c1d9d1d3b2f55dcc11a80fd536bf5224f803ed77191327a77a4',1,'tinyppp']]],
+  ['compile_20tests_10',['3. Compile Tests',['../md_docs_2testing.html#autotoc_md17',1,'']]],
+  ['conf_5fack_11',['CONF_ACK',['../namespacetinyppp.html#a29367f15060152c1d9d1d3b2f55dcc11aea6a26e0109a0804b4909b1775b7d65d',1,'tinyppp']]],
+  ['conf_5fnak_12',['CONF_NAK',['../namespacetinyppp.html#a29367f15060152c1d9d1d3b2f55dcc11a36c34e6a6a10f780df7d7be9a92b0fab',1,'tinyppp']]],
+  ['conf_5frej_13',['CONF_REJ',['../namespacetinyppp.html#a29367f15060152c1d9d1d3b2f55dcc11a5c612c89c8f26b02a8b504ddd5ae813a',1,'tinyppp']]],
+  ['conf_5freq_14',['CONF_REQ',['../namespacetinyppp.html#a29367f15060152c1d9d1d3b2f55dcc11a0fb0d128fcb825bf968f2efa32d659e9',1,'tinyppp']]],
+  ['config_15',['config',['../class_tiny_p_p_p___generic.html#aba7d5b7f314b653d2822a28633d5b1cc',1,'TinyPPP_Generic::config()'],['../class_tiny_p_p_p___r_p2040.html#aba7d5b7f314b653d2822a28633d5b1cc',1,'TinyPPP_RP2040::config()']]],
+  ['connect_16',['connect',['../class_p_p_p_client.html#a37f02d2f05049f31f600e59018b97a60',1,'PPPClient::connect(const char *host, uint16_t port) override'],['../class_p_p_p_client.html#abaf27151dd8f26e0ce0b0203ba4bdcbd',1,'PPPClient::connect(IPAddress ip, uint16_t port) override']]],
+  ['connected_17',['connected',['../class_p_p_p_client.html#af25c5d38712af335a7fd1a472bb7e0e9',1,'PPPClient::connected()'],['../class_tiny_p_p_p___e_s_p32.html#aa0fd96bc25e3d509fb54028c2e4b91f6',1,'TinyPPP_ESP32::connected()'],['../class_tiny_p_p_p___generic.html#aa0fd96bc25e3d509fb54028c2e4b91f6',1,'TinyPPP_Generic::connected()'],['../class_tiny_p_p_p___r_p2040.html#aa0fd96bc25e3d509fb54028c2e4b91f6',1,'TinyPPP_RP2040::connected()']]],
+  ['contiguous_18',['contiguous',['../classtinyppp_1_1_ring_buffer.html#a939f8b15f49f3c01fc413f7b4ee0b5c0',1,'tinyppp::RingBuffer']]],
+  ['covered_20today_20tt_20tests_20test_5ftinyppp_20cpp_20tt_19',['Covered today (&lt;tt&gt;tests/test_tinyppp.cpp&lt;/tt&gt;)',['../md_docs_2testing.html#autotoc_md13',1,'']]],
+  ['cpcode_20',['CPCode',['../namespacetinyppp.html#a29367f15060152c1d9d1d3b2f55dcc11',1,'tinyppp']]],
+  ['cpp_20tt_21',['Covered today (&lt;tt&gt;tests/test_tinyppp.cpp&lt;/tt&gt;)',['../md_docs_2testing.html#autotoc_md13',1,'']]],
+  ['cpstate_22',['CPState',['../namespacetinyppp.html#a3a4291819457ab41bb97e383ddc4be2d',1,'tinyppp']]],
+  ['current_23',['current',['../classtinyppp_1_1_i_p_stack.html#a8616a28e810c55e78e5c72c59f3bb028',1,'tinyppp::IPStack']]]
+];

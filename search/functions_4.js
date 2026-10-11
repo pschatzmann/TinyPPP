@@ -1,0 +1,8 @@
+var searchData=
+[
+  ['data_0',['data',['../classtinyppp_1_1_h_d_l_c_encoder.html#a1db03c0e898495f28111f6c9b4e3cd1a',1,'tinyppp::HDLCEncoder::data(uint8_t b)'],['../classtinyppp_1_1_h_d_l_c_encoder.html#a012a82d8308566a60301792cbb4f269d',1,'tinyppp::HDLCEncoder::data(const uint8_t *buf, size_t len)']]],
+  ['discard_1',['discard',['../classtinyppp_1_1_ring_buffer.html#acc440e29506dd91829403a10337c5062',1,'tinyppp::RingBuffer']]],
+  ['dns1_2',['dns1',['../classtinyppp_1_1_p_p_p_engine.html#a7d9fa3381d7dd254b23e9314d7dfe49a',1,'tinyppp::PPPEngine']]],
+  ['dns2_3',['dns2',['../classtinyppp_1_1_p_p_p_engine.html#a60199e061a123644ad575477b46cbe57',1,'tinyppp::PPPEngine']]],
+  ['dnsip_4',['dnsip',['../class_tiny_p_p_p___generic.html#ad932d5b7852ea9e3cd8303dbcaccde39',1,'TinyPPP_Generic::dnsIP()'],['../class_tiny_p_p_p___r_p2040.html#ad932d5b7852ea9e3cd8303dbcaccde39',1,'TinyPPP_RP2040::dnsIP()']]]
+];
