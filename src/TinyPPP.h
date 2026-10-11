@@ -33,7 +33,11 @@
 #endif
 
 // The public API in the global namespace; the internals stay in tinyppp
-using tinyppp::PPPClient;
-using tinyppp::PPPServer;
-using tinyppp::PPPUDP;
-using tinyppp::TinyPPP;
+#ifndef PPP_USE_NAMESPACE
+#define PP_USE_NAMESPACE true
+#endif
+
+#if PPP_USE_NAMESPACE
+using namespace tinyppp;
+#endif
+
