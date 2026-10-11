@@ -25,6 +25,12 @@ if(NOT arduino_emulator_POPULATED)
   add_subdirectory(${arduino_emulator_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR}/arduino_emulator)
 endif()
 
+# treat the emulator headers as system headers: -Wall -Wextra only reports
+# warnings in TinyPPP
+get_target_property(_emulator_includes arduino_emulator INTERFACE_INCLUDE_DIRECTORIES)
+set_property(TARGET arduino_emulator APPEND PROPERTY
+  INTERFACE_SYSTEM_INCLUDE_DIRECTORIES ${_emulator_includes})
+
 # header only library
 add_library(tinyppp INTERFACE)
 target_include_directories(tinyppp INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/src)
