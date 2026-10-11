@@ -17,12 +17,16 @@ The tests cover:
 - the passive/server role
 - the built-in TCP/IP stack between two instances: TCP connect, accept, a 20 KB transfer in both directions, close, connection refused and link loss; reuse of sockets; UDP; DNS
 
-`build/examples/desktop/ppp-pty` runs the engine on a pseudo terminal, so you can connect the real pppd to it and ping it:
+The desktop examples in [examples/desktop](../examples/desktop) are regular Arduino sketches (`setup()` and `loop()`). They are built with `arduino_sketch()` from the Arduino-Emulator's `Arduino.cmake`, and the emulator provides `main()`.
+
+`build/examples/desktop/ppp-pty` ([ppp-pty.ino](../examples/desktop/ppp-pty/ppp-pty.ino)) runs PPP over `Serial`, which is stdin/stdout in the emulator. With its `pty` option, pppd starts the sketch on a pseudo terminal, so you can connect the real pppd to it and ping it:
 
 ```bash
-./build/examples/desktop/ppp-pty     # prints e.g. "pty: /dev/pts/5" (macOS: "pty: /dev/ttys005")
-sudo pppd /dev/pts/5 115200 192.168.77.1:192.168.77.2 noauth local nodetach novj noccp
+cd build/examples/desktop
+sudo pppd pty "./ppp-pty" 192.168.77.1:192.168.77.2 noauth local nodetach novj noccp nodefaultroute
 ping 192.168.77.2
 ```
+
+pppd runs the command with the rights of the user who started pppd. Because stdout carries PPP, the sketch writes its log to stderr. Set `PPP_TIMEOUT` (seconds) to stop it automatically, e.g. `pty "env PPP_TIMEOUT=60 ./ppp-pty"`.
 
 The GitHub workflow [desktop.yml](../.github/workflows/desktop.yml) builds and runs the tests on Ubuntu and macOS.

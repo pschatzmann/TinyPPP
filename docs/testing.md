@@ -104,17 +104,17 @@ Most of these cases need lost or reordered packets. Add a filter to `LoopbackStr
 
 ## 2. Interop Tests with pppd
 
-Script these with `ppp-pty` and `PPP_TIMEOUT` on the Ubuntu runner (`sudo apt-get install ppp`, passwordless `sudo` is available):
+Script these with `ppp-pty` (started by pppd with `pty "env PPP_TIMEOUT=60 ./ppp-pty"`, its log goes to stderr) on the Ubuntu runner (`sudo apt-get install ppp`, passwordless `sudo` is available):
 
 | Case | pppd options | Pass criteria |
 |---|---|---|
-| Basic link | `192.168.77.1:192.168.77.2 noauth local nodetach novj noccp` | `connected:` line, `ping -c 5 192.168.77.2` gets 0 % loss |
+| Basic link | `pty "./ppp-pty" 192.168.77.1:192.168.77.2 noauth local nodetach novj noccp` | `connected:` line, `ping -c 5 192.168.77.2` gets 0 % loss |
 | Large packets | as above | `ping -s 1472 -M do` succeeds |
 | DNS | add `ms-dns 8.8.8.8 ms-dns 1.1.1.1` | `ppp-pty` prints `dns 8.8.8.8` |
 | PAP | `require-pap`, `user` + `/etc/ppp/pap-secrets`, set the credentials in `ppp-pty` (needs an env var) | link comes up. With a wrong password, pppd reports an authentication failure. |
 | Default pppd (VJ, CCP on) | leave out `novj noccp` | link comes up (VJ rejected, CCP protocol-rejected) |
 | Keep-alive | `lcp-echo-interval 1 lcp-echo-failure 3` | link stays up for 60 s |
-| Peer restart | kill pppd, start it again | `disconnected`, then `connected` again with no restart of `ppp-pty` |
+| Peer exit | kill pppd | `ppp-pty` exits as well (no process left behind) |
 | Engine restart | stop `ppp-pty` (PPP_TIMEOUT), start it again | pppd reconnects (with `persist`) |
 
 At the end, check the summary line printed by `ppp-pty`: `fcs errors 0`.

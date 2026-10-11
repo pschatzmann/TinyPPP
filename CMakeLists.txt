@@ -42,5 +42,7 @@ if(TINYPPP_BUILD_TESTS)
 endif()
 
 if(TINYPPP_BUILD_EXAMPLES AND UNIX)
+  # arduino_sketch(): builds an Arduino sketch with the emulator
+  include(${arduino_emulator_SOURCE_DIR}/Arduino.cmake)
   add_subdirectory(examples/desktop)
 endif()
