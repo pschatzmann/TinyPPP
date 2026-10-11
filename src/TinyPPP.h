@@ -34,7 +34,7 @@
 
 // The public API in the global namespace; the internals stay in tinyppp
 #ifndef PPP_USE_NAMESPACE
-#define PP_USE_NAMESPACE true
+#define PPP_USE_NAMESPACE true
 #endif
 
 #if PPP_USE_NAMESPACE
