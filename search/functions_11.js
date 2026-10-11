@@ -17,10 +17,10 @@ var searchData=
   ['tcpvalid_14',['tcpValid',['../classtinyppp_1_1_i_p_stack.html#a9030637d23469a90be5b063aca5bb872',1,'tinyppp::IPStack']]],
   ['tcpwrite_15',['tcpWrite',['../classtinyppp_1_1_i_p_stack.html#ade84dea33608e13958e8d3ad9a97ee1c',1,'tinyppp::IPStack']]],
   ['tcpwriteall_16',['tcpWriteAll',['../classtinyppp_1_1_i_p_stack.html#ac8586bccfecc812001ab08b9c1217ecb',1,'tinyppp::IPStack']]],
-  ['tinyppp_5fesp32_17',['tinyppp_esp32',['../class_tiny_p_p_p___e_s_p32.html#a6461bc95f6a9f3080b0e871f32be664b',1,'TinyPPP_ESP32::TinyPPP_ESP32()=default'],['../class_tiny_p_p_p___e_s_p32.html#aa5ee1a1f9beb9a0e63157cf3c08e3ef2',1,'TinyPPP_ESP32::TinyPPP_ESP32(const TinyPPP_ESP32 &amp;)=delete']]],
-  ['tinyppp_5frp2040_18',['tinyppp_rp2040',['../class_tiny_p_p_p___r_p2040.html#aaa6725b9dfa773877ee7be417db6bae4',1,'TinyPPP_RP2040::TinyPPP_RP2040()=default'],['../class_tiny_p_p_p___r_p2040.html#a160cda162d2a6a6db875d9cb223a34d6',1,'TinyPPP_RP2040::TinyPPP_RP2040(const TinyPPP_RP2040 &amp;)=delete']]],
+  ['tinyppp_5fesp32_17',['tinyppp_esp32',['../classtinyppp_1_1_tiny_p_p_p___e_s_p32.html#a6461bc95f6a9f3080b0e871f32be664b',1,'tinyppp::TinyPPP_ESP32::TinyPPP_ESP32()=default'],['../classtinyppp_1_1_tiny_p_p_p___e_s_p32.html#aa5ee1a1f9beb9a0e63157cf3c08e3ef2',1,'tinyppp::TinyPPP_ESP32::TinyPPP_ESP32(const TinyPPP_ESP32 &amp;)=delete']]],
+  ['tinyppp_5frp2040_18',['tinyppp_rp2040',['../classtinyppp_1_1_tiny_p_p_p___r_p2040.html#aaa6725b9dfa773877ee7be417db6bae4',1,'tinyppp::TinyPPP_RP2040::TinyPPP_RP2040()=default'],['../classtinyppp_1_1_tiny_p_p_p___r_p2040.html#a160cda162d2a6a6db875d9cb223a34d6',1,'tinyppp::TinyPPP_RP2040::TinyPPP_RP2040(const TinyPPP_RP2040 &amp;)=delete']]],
   ['toip4_19',['toIp4',['../namespacetinyppp.html#abc555ebdcbad64a510bf11b10a678596',1,'tinyppp']]],
   ['toipaddress_20',['toIPAddress',['../namespacetinyppp.html#a2a5f9ad599e014d68f579e4467350785',1,'tinyppp']]],
   ['tostr_21',['toStr',['../namespacetinyppp.html#abdf84fb6d3c9dfe747220da3231eb89a',1,'tinyppp']]],
-  ['transmit_22',['transmit',['../class_tiny_p_p_p___e_s_p32.html#a4e673d9c4e700efcb5f345db6cd28085',1,'TinyPPP_ESP32']]]
+  ['transmit_22',['transmit',['../classtinyppp_1_1_tiny_p_p_p___e_s_p32.html#a4e673d9c4e700efcb5f345db6cd28085',1,'tinyppp::TinyPPP_ESP32']]]
 ];

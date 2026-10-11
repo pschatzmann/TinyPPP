@@ -4,5 +4,5 @@ var searchData=
   ['discard_1',['discard',['../classtinyppp_1_1_ring_buffer.html#acc440e29506dd91829403a10337c5062',1,'tinyppp::RingBuffer']]],
   ['dns1_2',['dns1',['../classtinyppp_1_1_p_p_p_engine.html#a7d9fa3381d7dd254b23e9314d7dfe49a',1,'tinyppp::PPPEngine']]],
   ['dns2_3',['dns2',['../classtinyppp_1_1_p_p_p_engine.html#a60199e061a123644ad575477b46cbe57',1,'tinyppp::PPPEngine']]],
-  ['dnsip_4',['dnsip',['../class_tiny_p_p_p___generic.html#ad932d5b7852ea9e3cd8303dbcaccde39',1,'TinyPPP_Generic::dnsIP()'],['../class_tiny_p_p_p___r_p2040.html#ad932d5b7852ea9e3cd8303dbcaccde39',1,'TinyPPP_RP2040::dnsIP()']]]
+  ['dnsip_4',['dnsip',['../classtinyppp_1_1_tiny_p_p_p___generic.html#ad932d5b7852ea9e3cd8303dbcaccde39',1,'tinyppp::TinyPPP_Generic::dnsIP()'],['../classtinyppp_1_1_tiny_p_p_p___r_p2040.html#ad932d5b7852ea9e3cd8303dbcaccde39',1,'tinyppp::TinyPPP_RP2040::dnsIP()']]]
 ];
