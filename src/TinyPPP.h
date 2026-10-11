@@ -31,3 +31,9 @@
 #else
 #include "tinyppp/TinyPPP_Generic.h"
 #endif
+
+// The public API in the global namespace; the internals stay in tinyppp
+using tinyppp::PPPClient;
+using tinyppp::PPPServer;
+using tinyppp::PPPUDP;
+using tinyppp::TinyPPP;

@@ -25,6 +25,8 @@
 #define TINYPPP_RX_BUFFER 512
 #endif
 
+namespace tinyppp {
+
 /// Portable aliases for the network classes that work over PPP
 using PPPClient = NetworkClient;
 using PPPServer = NetworkServer;
@@ -300,3 +302,5 @@ class TinyPPP_ESP32 : public NetworkInterface {
 
 /// The PPP network interface of this platform
 using TinyPPP = TinyPPP_ESP32;
+
+}  // namespace tinyppp

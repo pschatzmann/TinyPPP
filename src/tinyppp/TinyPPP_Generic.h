@@ -17,11 +17,13 @@
 #include "PPPEngine.h"
 #include "PPPSockets.h"
 
+namespace tinyppp {
+
 /**
  * @brief PPP network interface for platforms without lwIP: the PPP engine
  * combined with the TinyPPP IPStack (TCP, UDP, ICMP echo and DNS).
  */
-class TinyPPP_Generic : public tinyppp::PPPEngine, public tinyppp::IPStack {
+class TinyPPP_Generic : public PPPEngine, public IPStack {
  public:
   /// Callback for received raw IPv4 packets
   using PacketCallback = void (*)(const uint8_t *data, size_t len, void *ref);
@@ -46,9 +48,9 @@ class TinyPPP_Generic : public tinyppp::PPPEngine, public tinyppp::IPStack {
   bool config(IPAddress local, IPAddress peer = IPAddress(0, 0, 0, 0),
               IPAddress dns1 = IPAddress(0, 0, 0, 0),
               IPAddress dns2 = IPAddress(0, 0, 0, 0)) {
-    setLocalIP(tinyppp::fromIPAddress(local));
-    setPeerIP(tinyppp::fromIPAddress(peer));
-    setOfferedDNS(tinyppp::fromIPAddress(dns1), tinyppp::fromIPAddress(dns2));
+    setLocalIP(fromIPAddress(local));
+    setPeerIP(fromIPAddress(peer));
+    setOfferedDNS(fromIPAddress(dns1), fromIPAddress(dns2));
     return true;
   }
 
@@ -66,14 +68,14 @@ class TinyPPP_Generic : public tinyppp::PPPEngine, public tinyppp::IPStack {
   /// true when the link is up and has an IP address
   bool connected() const { return isUp(); }
   /// Our IP address
-  IPAddress localIP() const { return tinyppp::toIPAddress(PPPEngine::localIP()); }
+  IPAddress localIP() const { return toIPAddress(PPPEngine::localIP()); }
   /// The IP address of the peer
-  IPAddress gatewayIP() const { return tinyppp::toIPAddress(peerIP()); }
+  IPAddress gatewayIP() const { return toIPAddress(peerIP()); }
   /// Always 255.255.255.255 (point-to-point link)
   IPAddress subnetMask() const { return IPAddress(255, 255, 255, 255); }
   /// The DNS server n (0 or 1) received from the peer
   IPAddress dnsIP(int n = 0) const {
-    return tinyppp::toIPAddress(n == 0 ? dns1() : dns2());
+    return toIPAddress(n == 0 ? dns1() : dns2());
   }
 
   /// Callback for received IPv4 packets that are not handled by the stack;
@@ -122,8 +124,8 @@ class TinyPPP_Generic : public tinyppp::PPPEngine, public tinyppp::IPStack {
   bool ipEnd() override { return endIPv4(); }
   void ipPoll() override { process(); }
   bool ipIsUp() const override { return isUp(); }
-  tinyppp::ip4_t ipLocal() const override { return PPPEngine::localIP(); }
-  tinyppp::ip4_t ipDns(int n) const override { return n == 0 ? dns1() : dns2(); }
+  ip4_t ipLocal() const override { return PPPEngine::localIP(); }
+  ip4_t ipDns(int n) const override { return n == 0 ? dns1() : dns2(); }
   uint16_t ipMtu() const override {
     uint16_t m = mtu();
     return m > TINYPPP_MRU ? TINYPPP_MRU : m;
@@ -132,3 +134,5 @@ class TinyPPP_Generic : public tinyppp::PPPEngine, public tinyppp::IPStack {
 
 /// The PPP network interface of this platform
 using TinyPPP = TinyPPP_Generic;
+
+}  // namespace tinyppp

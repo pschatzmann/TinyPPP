@@ -15,6 +15,8 @@
 #define TINYPPP_TIMEOUT 5000
 #endif
 
+namespace tinyppp {
+
 /**
  * @brief TCP client over PPP: used like WiFiClient or EthernetClient.
  *
@@ -25,16 +27,16 @@ class PPPClient : public Client {
   /// Client on the default stack (the first TinyPPP instance)
   PPPClient() = default;
   /// Client on the indicated stack
-  explicit PPPClient(tinyppp::IPStack &stack) : _stack(&stack) {}
+  explicit PPPClient(IPStack &stack) : _stack(&stack) {}
   /// Client for an existing socket (used by PPPServer)
-  PPPClient(tinyppp::IPStack *stack, int sock)
+  PPPClient(IPStack *stack, int sock)
       : _stack(stack), _sock(sock), _gen(stack->tcpGen(sock)) {}
 
   /// Connects to the address and port: returns 1 on success
   int connect(IPAddress ip, uint16_t port) override {
     if (stack() == nullptr) return 0;
     if (valid()) stop();
-    _sock = stack()->tcpConnect(tinyppp::toIp4(ip[0], ip[1], ip[2], ip[3]),
+    _sock = stack()->tcpConnect(toIp4(ip[0], ip[1], ip[2], ip[3]),
                                 port, _timeout);
     if (_sock < 0) return 0;
     _gen = stack()->tcpGen(_sock);
@@ -96,7 +98,7 @@ class PPPClient : public Client {
   uint8_t connected() override {
     if (!valid()) return 0;
     if (stack()->tcpAvailable(_sock) > 0) return 1;
-    return stack()->tcpState(_sock) == tinyppp::TCPState::Established;
+    return stack()->tcpState(_sock) == TCPState::Established;
   }
 
   /// true if the client refers to an open socket
@@ -111,7 +113,7 @@ class PPPClient : public Client {
 
   /// Address of the peer
   IPAddress remoteIP() {
-    return valid() ? tinyppp::toIPAddress(stack()->tcpRemoteIP(_sock))
+    return valid() ? toIPAddress(stack()->tcpRemoteIP(_sock))
                    : IPAddress(0, 0, 0, 0);
   }
   /// Port of the peer
@@ -125,13 +127,13 @@ class PPPClient : public Client {
   void setConnectionTimeout(uint32_t ms) { _timeout = ms; }
 
  protected:
-  tinyppp::IPStack *_stack = nullptr;
+  IPStack *_stack = nullptr;
   int _sock = -1;
   uint8_t _gen = 0;
   uint32_t _timeout = TINYPPP_TIMEOUT;
 
-  tinyppp::IPStack *stack() const {
-    return _stack ? _stack : tinyppp::IPStack::current();
+  IPStack *stack() const {
+    return _stack ? _stack : IPStack::current();
   }
   bool valid() const {
     return _sock >= 0 && stack() != nullptr && stack()->tcpValid(_sock, _gen);
@@ -144,7 +146,7 @@ class PPPServer : public Server {
   /// Server on the default stack (the first TinyPPP instance)
   explicit PPPServer(uint16_t port = 80) : _port(port) {}
   /// Server on the indicated stack
-  PPPServer(uint16_t port, tinyppp::IPStack &stack)
+  PPPServer(uint16_t port, IPStack &stack)
       : _port(port), _stack(&stack) {}
 
   /// Starts listening
@@ -192,11 +194,11 @@ class PPPServer : public Server {
 
  protected:
   uint16_t _port;
-  tinyppp::IPStack *_stack = nullptr;
+  IPStack *_stack = nullptr;
   bool _listening = false;
 
-  tinyppp::IPStack *stack() const {
-    return _stack ? _stack : tinyppp::IPStack::current();
+  IPStack *stack() const {
+    return _stack ? _stack : IPStack::current();
   }
 };
 
@@ -206,7 +208,7 @@ class PPPUDP : public UDP {
   /// UDP on the default stack (the first TinyPPP instance)
   PPPUDP() = default;
   /// UDP on the indicated stack
-  explicit PPPUDP(tinyppp::IPStack &stack) : _stack(&stack) {}
+  explicit PPPUDP(IPStack &stack) : _stack(&stack) {}
   ~PPPUDP() { stop(); }
   PPPUDP(const PPPUDP &) = delete;
   PPPUDP &operator=(const PPPUDP &) = delete;
@@ -248,7 +250,7 @@ class PPPUDP : public UDP {
   int endPacket() override {
     if (_sock < 0 || _txOverflow) return 0;
     bool ok = stack()->udpSend(
-        _sock, tinyppp::toIp4(_txIP[0], _txIP[1], _txIP[2], _txIP[3]), _txPort,
+        _sock, toIp4(_txIP[0], _txIP[1], _txIP[2], _txIP[3]), _txPort,
         _tx, _txLen);
     _txLen = 0;
     return ok;
@@ -271,9 +273,9 @@ class PPPUDP : public UDP {
   /// Moves to the next received datagram: returns its size (0 if none)
   int parsePacket() override {
     if (_sock < 0) return 0;
-    tinyppp::ip4_t ip = 0;
+    ip4_t ip = 0;
     int n = stack()->udpParsePacket(_sock, ip, _rxPort);
-    if (n > 0 || stack()->udpAvailable(_sock) > 0) _rxIP = tinyppp::toIPAddress(ip);
+    if (n > 0 || stack()->udpAvailable(_sock) > 0) _rxIP = toIPAddress(ip);
     return n;
   }
 
@@ -314,7 +316,7 @@ class PPPUDP : public UDP {
   uint16_t localPort() { return _sock < 0 ? 0 : stack()->udpLocalPort(_sock); }
 
  protected:
-  tinyppp::IPStack *_stack = nullptr;
+  IPStack *_stack = nullptr;
   int _sock = -1;
   IPAddress _rxIP;
   uint16_t _rxPort = 0;
@@ -324,7 +326,9 @@ class PPPUDP : public UDP {
   bool _txOverflow = false;
   uint8_t _tx[TINYPPP_UDP_TX_BUFFER];
 
-  tinyppp::IPStack *stack() const {
-    return _stack ? _stack : tinyppp::IPStack::current();
+  IPStack *stack() const {
+    return _stack ? _stack : IPStack::current();
   }
 };
+
+}  // namespace tinyppp

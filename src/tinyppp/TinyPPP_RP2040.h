@@ -23,19 +23,21 @@
 
 #include "PPPEngine.h"
 
+extern std::function<void(struct netif *)> _addNetifCB;
+extern std::function<void(struct netif *)> _removeNetifCB;
+
+namespace tinyppp {
+
 /// Portable aliases for the network classes that work over PPP
 using PPPClient = WiFiClient;
 using PPPServer = WiFiServer;
 using PPPUDP = WiFiUDP;
 
-extern std::function<void(struct netif *)> _addNetifCB;
-extern std::function<void(struct netif *)> _removeNetifCB;
-
 /**
  * @brief PPP network interface for RP2040 / RP2350 (arduino-pico): the
  * TinyPPP engine registered as a point-to-point lwIP netif.
  */
-class TinyPPP_RP2040 : public LwipIntf, protected tinyppp::PPPEngine {
+class TinyPPP_RP2040 : public LwipIntf, protected PPPEngine {
  public:
   TinyPPP_RP2040() = default;
   TinyPPP_RP2040(const TinyPPP_RP2040 &) = delete;
@@ -90,9 +92,9 @@ class TinyPPP_RP2040 : public LwipIntf, protected tinyppp::PPPEngine {
   bool config(IPAddress local, IPAddress peer = IPAddress(0, 0, 0, 0),
               IPAddress dns1 = IPAddress(0, 0, 0, 0),
               IPAddress dns2 = IPAddress(0, 0, 0, 0)) {
-    setLocalIP(tinyppp::fromIPAddress(local));
-    setPeerIP(tinyppp::fromIPAddress(peer));
-    setOfferedDNS(tinyppp::fromIPAddress(dns1), tinyppp::fromIPAddress(dns2));
+    setLocalIP(fromIPAddress(local));
+    setPeerIP(fromIPAddress(peer));
+    setOfferedDNS(fromIPAddress(dns1), fromIPAddress(dns2));
     return true;
   }
 
@@ -142,7 +144,7 @@ class TinyPPP_RP2040 : public LwipIntf, protected tinyppp::PPPEngine {
   IPAddress subnetMask() const { return IPAddress(ip4_addr_get_u32(netif_ip4_netmask(&_netif))); }
   /// The DNS server n (0 or 1) received from the peer
   IPAddress dnsIP(int n = 0) const {
-    return tinyppp::toIPAddress(n == 0 ? dns1() : dns2());
+    return toIPAddress(n == 0 ? dns1() : dns2());
   }
 
   /// Callback for link up/down
@@ -258,3 +260,5 @@ class TinyPPP_RP2040 : public LwipIntf, protected tinyppp::PPPEngine {
 
 /// The PPP network interface of this platform
 using TinyPPP = TinyPPP_RP2040;
+
+}  // namespace tinyppp
