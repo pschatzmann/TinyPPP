@@ -15,10 +15,15 @@
  *
  * On ESP32 and RP2040 PPPClient, PPPServer and PPPUDP are aliases for the
  * native classes, so the same sketch builds on all platforms.
+ *
+ * Define PPP_PREFER_GENERIC (before the include or as build flag) to use the
+ * generic implementation on ESP32 and RP2040 as well.
  */
 
 #if defined(ARDUINO_ARCH_AVR) || defined(ARDUINO_ARCH_MEGAAVR)
 #error "TinyPPP needs a 32-bit board (AVR does not have enough RAM)"
+#elif defined(PPP_PREFER_GENERIC)
+#include "tinyppp/TinyPPP_Generic.h"
 #elif defined(ESP32)
 #include "tinyppp/TinyPPP_ESP32.h"
 #elif defined(ARDUINO_ARCH_RP2040) && !defined(ARDUINO_ARCH_MBED)

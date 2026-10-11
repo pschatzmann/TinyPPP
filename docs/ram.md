@@ -28,3 +28,5 @@ On top of this, the stack needs about 1 KB of stack space while it processes pac
 ```
 
 The TCP receive buffer limits the window that is offered to the peer. Small buffers therefore lower the throughput, but the link keeps working. The defines only take effect when they come before every `#include <TinyPPP.h>`, so in a multi-file sketch it's better to set them as build flags.
+
+The generic stack can also be used on ESP32 and RP2040 with `PPP_PREFER_GENERIC`. See [Platform Notes](platform-notes.md) for the memory comparison with the native implementations.

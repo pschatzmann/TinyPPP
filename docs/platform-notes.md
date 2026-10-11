@@ -19,4 +19,15 @@ On WiFiNINA boards, `WiFiClient` and the other WiFiNINA classes keep using WiFi.
 
 The sizes can be changed with defines set before `#include <TinyPPP.h>` (defaults in brackets): `TINYPPP_TCP_SOCKETS` (4), `TINYPPP_TCP_RX_BUFFER` and `TINYPPP_TCP_TX_BUFFER` (1024 bytes per socket), `TINYPPP_TCP_LISTENERS` (2), `TINYPPP_UDP_SOCKETS` (2), `TINYPPP_UDP_RX_BUFFER` (1024) and `TINYPPP_UDP_TX_BUFFER` (576 bytes per `PPPUDP` object). With the defaults, TinyPPP uses about 13 KB of static RAM. See [RAM Requirements](ram.md) for the details.
 
+**Generic stack on ESP32 and RP2040:** define `PPP_PREFER_GENERIC` before `#include <TinyPPP.h>` (or as a build flag) to use the generic implementation instead of the native one. `PPPClient`, `PPPServer` and `PPPUDP` are then the classes of the built-in stack. They are separate from the core's network classes, so `WiFiClient`, `NetworkClient` and `Network.onEvent()` don't work over PPP. As on the other generic boards, the link is processed by the socket methods and `ppp.loop()`; there is no background task.
+
+The memory impact, measured with the `WebServer` example (flash and static RAM):
+
+| Board | Native | `PPP_PREFER_GENERIC` |
+|---|---|---|
+| ESP32 | 439 KB flash, 27.3 KB RAM | 289 KB flash (−150 KB), 35.0 KB RAM (+7.7 KB) |
+| Raspberry Pi Pico | 105 KB flash, 52.9 KB RAM | 70 KB flash (−35 KB), 21.6 KB RAM (−31 KB) |
+
+On ESP32 the static RAM rises by the socket buffers of the generic stack. The native build also takes heap at runtime (the 4 KB reader task and lwIP buffers), which these numbers don't include. On RP2040 the savings come from not linking the core's lwIP and WiFi library. When the sketch uses WiFi as well, they are linked anyway and most of the savings are lost.
+
 **Memory:** the engine uses about 1.8 KB per instance (a 1.5 KB receive frame buffer plus a 256 B transmit buffer). The buffers are on the hot path and small, so they stay in internal RAM. On ESP32, packet memory comes from lwIP and follows the core's PSRAM configuration.

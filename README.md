@@ -22,7 +22,7 @@ On ESP32 and RP2040, `PPPClient`, `PPPServer` and `PPPUDP` are aliases for the n
 - [Platform Notes](docs/platform-notes.md): ESP32, RP2040 / RP2350, other 32-bit boards (e.g. WiFiNINA) and memory
 - [RAM Requirements](docs/ram.md): memory use of the built-in TCP/IP stack and how to reduce it
 - [Desktop Build and Tests](docs/desktop.md): building and testing with the Arduino-Emulator
-- [Testing Plan](docs/testing-plan.md): test levels, coverage gaps and the release checklist
+- [Testing](docs/testing.md): test levels, current status, coverage gaps and the release checklist
 
 
 ## Installation
