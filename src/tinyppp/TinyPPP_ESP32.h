@@ -34,12 +34,12 @@ using PPPUDP = NetworkUDP;
  * @brief PPP network interface for ESP32 (arduino-esp32 3.x): ESP-IDF lwIP
  * PPP via esp_netif, integrated as a NetworkInterface.
  */
-class TinyPPP : public NetworkInterface {
+class TinyPPP_ESP32 : public NetworkInterface {
  public:
-  TinyPPP() = default;
-  TinyPPP(const TinyPPP &) = delete;
-  TinyPPP &operator=(const TinyPPP &) = delete;
-  ~TinyPPP() { end(); }
+  TinyPPP_ESP32() = default;
+  TinyPPP_ESP32(const TinyPPP_ESP32 &) = delete;
+  TinyPPP_ESP32 &operator=(const TinyPPP_ESP32 &) = delete;
+  ~TinyPPP_ESP32() { end(); }
 
   /**
    * Starts PPP over the indicated stream (e.g. Serial, Serial1). The stream
@@ -152,7 +152,7 @@ class TinyPPP : public NetworkInterface {
 
   struct Driver {
     esp_netif_driver_base_t base;  // must be the first member
-    TinyPPP *self;
+    TinyPPP_ESP32 *self;
   };
 
   Driver _driver{};
@@ -200,7 +200,7 @@ class TinyPPP : public NetworkInterface {
 
   // esp_netif driver: output of the PPP stack (called from the lwIP task)
   static esp_err_t transmit(void *handle, void *buffer, size_t len) {
-    TinyPPP *self = ((Driver *)handle)->self;
+    TinyPPP_ESP32 *self = ((Driver *)handle)->self;
     if (self->_io == nullptr) return ESP_FAIL;
     const uint8_t *data = (const uint8_t *)buffer;
     size_t done = 0;
@@ -214,7 +214,7 @@ class TinyPPP : public NetworkInterface {
 
   // reads the stream and feeds the PPP stack
   static void rxTask(void *arg) {
-    TinyPPP *self = (TinyPPP *)arg;
+    TinyPPP_ESP32 *self = (TinyPPP_ESP32 *)arg;
     uint8_t buffer[TINYPPP_RX_BUFFER];
     while (self->_running) {
       int avail = self->_io->available();
@@ -253,7 +253,7 @@ class TinyPPP : public NetworkInterface {
 
   static void pppEventCb(void *arg, esp_event_base_t base, int32_t id,
                          void *data) {
-    TinyPPP *self = (TinyPPP *)arg;
+    TinyPPP_ESP32 *self = (TinyPPP_ESP32 *)arg;
     // event data is a esp_netif_t** (except for NETIF_PPP_CONNECT_FAILED where
     // ESP-IDF posts the netif struct itself: there is only one PPP slot anyway)
     if (id != NETIF_PPP_CONNECT_FAILED) {
@@ -297,3 +297,6 @@ class TinyPPP : public NetworkInterface {
     }
   }
 };
+
+/// The PPP network interface of this platform
+using TinyPPP = TinyPPP_ESP32;

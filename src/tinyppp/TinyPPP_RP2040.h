@@ -35,12 +35,12 @@ extern std::function<void(struct netif *)> _removeNetifCB;
  * @brief PPP network interface for RP2040 / RP2350 (arduino-pico): the
  * TinyPPP engine registered as a point-to-point lwIP netif.
  */
-class TinyPPP : public LwipIntf, protected tinyppp::PPPEngine {
+class TinyPPP_RP2040 : public LwipIntf, protected tinyppp::PPPEngine {
  public:
-  TinyPPP() = default;
-  TinyPPP(const TinyPPP &) = delete;
-  TinyPPP &operator=(const TinyPPP &) = delete;
-  ~TinyPPP() { end(); }
+  TinyPPP_RP2040() = default;
+  TinyPPP_RP2040(const TinyPPP_RP2040 &) = delete;
+  TinyPPP_RP2040 &operator=(const TinyPPP_RP2040 &) = delete;
+  ~TinyPPP_RP2040() { end(); }
 
   /**
    * Starts PPP over the indicated stream (e.g. Serial, Serial1). The stream
@@ -199,7 +199,7 @@ class TinyPPP : public LwipIntf, protected tinyppp::PPPEngine {
   static err_t output4(struct netif *netif, struct pbuf *p,
                        const ip4_addr_t *addr) {
     (void)addr;
-    TinyPPP *self = (TinyPPP *)netif->state;
+    TinyPPP_RP2040 *self = (TinyPPP_RP2040 *)netif->state;
     if (!self->beginIPv4()) return ERR_CONN;
     for (struct pbuf *q = p; q != nullptr; q = q->next) {
       self->writeIPv4((const uint8_t *)q->payload, q->len);
@@ -255,3 +255,6 @@ class TinyPPP : public LwipIntf, protected tinyppp::PPPEngine {
     if (_stateCallback) _stateCallback(false, _stateRef);
   }
 };
+
+/// The PPP network interface of this platform
+using TinyPPP = TinyPPP_RP2040;

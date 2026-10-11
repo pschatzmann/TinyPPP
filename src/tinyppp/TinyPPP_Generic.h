@@ -21,7 +21,7 @@
  * @brief PPP network interface for platforms without lwIP: the PPP engine
  * combined with the TinyPPP IPStack (TCP, UDP, ICMP echo and DNS).
  */
-class TinyPPP : public tinyppp::PPPEngine, public tinyppp::IPStack {
+class TinyPPP_Generic : public tinyppp::PPPEngine, public tinyppp::IPStack {
  public:
   /// Callback for received raw IPv4 packets
   using PacketCallback = void (*)(const uint8_t *data, size_t len, void *ref);
@@ -129,3 +129,6 @@ class TinyPPP : public tinyppp::PPPEngine, public tinyppp::IPStack {
     return m > TINYPPP_MRU ? TINYPPP_MRU : m;
   }
 };
+
+/// The PPP network interface of this platform
+using TinyPPP = TinyPPP_Generic;
