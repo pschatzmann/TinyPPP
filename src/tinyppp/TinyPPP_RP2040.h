@@ -31,6 +31,10 @@ using PPPUDP = WiFiUDP;
 extern std::function<void(struct netif *)> _addNetifCB;
 extern std::function<void(struct netif *)> _removeNetifCB;
 
+/**
+ * @brief PPP network interface for RP2040 / RP2350 (arduino-pico): the
+ * TinyPPP engine registered as a point-to-point lwIP netif.
+ */
 class TinyPPP : public LwipIntf, protected tinyppp::PPPEngine {
  public:
   TinyPPP() = default;
@@ -123,21 +127,35 @@ class TinyPPP : public LwipIntf, protected tinyppp::PPPEngine {
     return true;
   }
 
+  /// true when the link is up and has an IP address
   bool connected() const { return _up; }
+  /// WL_CONNECTED when the link is up, WL_NO_SHIELD before begin()
   wl_status_t status() const {
     if (!_netifAdded) return WL_NO_SHIELD;
     return _up ? WL_CONNECTED : WL_DISCONNECTED;
   }
+  /// Our IP address
   IPAddress localIP() const { return IPAddress(ip4_addr_get_u32(netif_ip4_addr(&_netif))); }
+  /// The IP address of the peer
   IPAddress gatewayIP() const { return IPAddress(ip4_addr_get_u32(netif_ip4_gw(&_netif))); }
+  /// Always 255.255.255.255 (point-to-point link)
   IPAddress subnetMask() const { return IPAddress(ip4_addr_get_u32(netif_ip4_netmask(&_netif))); }
+  /// The DNS server n (0 or 1) received from the peer
   IPAddress dnsIP(int n = 0) const {
     return tinyppp::toIPAddress(n == 0 ? dns1() : dns2());
   }
 
-  /// Callback for link up/down (called from the lwIP context)
-  void onStateChange(std::function<void(bool up)> cb) { _stateCallback = cb; }
+  /// Callback for link up/down
+  using StateCallback = void (*)(bool up, void *ref);
 
+  /// Callback for link up/down (called from the lwIP context); ref is passed
+  /// to the callback
+  void onStateChange(StateCallback cb, void *ref = nullptr) {
+    _stateCallback = cb;
+    _stateRef = ref;
+  }
+
+  /// The lwIP netif of the interface
   struct netif *getNetIf() { return &_netif; }
 
  protected:
@@ -150,7 +168,8 @@ class TinyPPP : public LwipIntf, protected tinyppp::PPPEngine {
   volatile bool _up = false;
   bool _netifAdded = false;
   bool _default = true;
-  std::function<void(bool)> _stateCallback;
+  StateCallback _stateCallback = nullptr;
+  void *_stateRef = nullptr;
 
   // called by the lwIP background task (lwIP lock held)
   void poll() {
@@ -223,7 +242,7 @@ class TinyPPP : public LwipIntf, protected tinyppp::PPPEngine {
     }
     if (_default) netif_set_default(&_netif);
     _up = true;
-    if (_stateCallback) _stateCallback(true);
+    if (_stateCallback) _stateCallback(true, _stateRef);
   }
 
   void onLinkDown() override {
@@ -233,6 +252,6 @@ class TinyPPP : public LwipIntf, protected tinyppp::PPPEngine {
     ip4_addr_t any;
     ip4_addr_set_zero(&any);
     netif_set_addr(&_netif, &any, &any, &any);
-    if (_stateCallback) _stateCallback(false);
+    if (_stateCallback) _stateCallback(false, _stateRef);
   }
 };

@@ -28,6 +28,7 @@ inline uint16_t fcs16Update(uint16_t fcs, uint8_t b) {
   return fcs;
 }
 
+/// FCS-16 over a buffer (continues from fcs)
 inline uint16_t fcs16(const uint8_t *data, size_t len,
                       uint16_t fcs = FCS16_INIT) {
   for (size_t i = 0; i < len; i++) fcs = fcs16Update(fcs, data[i]);
@@ -35,11 +36,14 @@ inline uint16_t fcs16(const uint8_t *data, size_t len,
 }
 
 /**
+ * @brief HDLC frame encoder (RFC 1662).
+ *
  * Writes one HDLC frame at a time to a Print. Output is collected in a small
  * buffer so that the underlying (USB) serial gets reasonably sized writes.
  */
 class HDLCEncoder {
  public:
+  /// Defines the output (e.g. the serial port)
   void setOutput(Print *out) { _out = out; }
 
   /// Async-Control-Character-Map of the peer: control chars to escape
@@ -58,11 +62,13 @@ class HDLCEncoder {
     data(protocol & 0xFF);
   }
 
+  /// Adds one payload byte
   void data(uint8_t b) {
     _fcs = fcs16Update(_fcs, b);
     stuffed(b);
   }
 
+  /// Adds payload bytes
   void data(const uint8_t *buf, size_t len) {
     for (size_t i = 0; i < len; i++) data(buf[i]);
   }
@@ -115,6 +121,8 @@ class HDLCEncoder {
 };
 
 /**
+ * @brief HDLC frame decoder (RFC 1662).
+ *
  * Reassembles frames from a byte stream. After a complete frame with a valid
  * FCS has been received, add() returns true and frame()/frameLen() give the
  * content (address/control removed when present, FCS removed).
@@ -157,7 +165,9 @@ class HDLCDecoder {
 
   /// Frame content without FCS (address/control included if sent)
   uint8_t *frame() { return _buf; }
+  /// Length of the frame returned by frame()
   size_t frameLen() const { return _frameLen; }
+  /// Number of frames dropped because of a wrong FCS
   uint32_t fcsErrors() const { return _fcsErrors; }
 
  private:

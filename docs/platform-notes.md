@@ -10,4 +10,13 @@
 
 The stream is polled by the core's lwIP background task (default every 20 ms). For more throughput, lower the period with `ppp.setPollingPeriod(2)`. On a UART, also make the RX buffer large enough, for example `Serial1.setFIFOSize(4096)`.
 
+**Other 32-bit boards (generic):** these include the WiFiNINA boards (Nano 33 IoT, MKR WiFi 1010, Nano RP2040 Connect), UNO R4, Due and STM32. On these boards the TCP/IP stack runs inside the WiFi module or isn't present at all, so TinyPPP brings its own small one:
+- TCP client and server with in-order receive, retransmission and zero-window probes, but no congestion control
+- UDP, ICMP echo replies and a DNS resolver (A records)
+- no IP fragmentation, no IPv6, no multicast
+
+On WiFiNINA boards, `WiFiClient` and the other WiFiNINA classes keep using WiFi. Over PPP you use `PPPClient`, `PPPServer` and `PPPUDP`. There is no background task: every socket method processes the link. If the sketch doesn't use a socket for a while, call `ppp.loop()`.
+
+The sizes can be changed with defines set before `#include <TinyPPP.h>` (defaults in brackets): `TINYPPP_TCP_SOCKETS` (4), `TINYPPP_TCP_RX_BUFFER` and `TINYPPP_TCP_TX_BUFFER` (1024 bytes per socket), `TINYPPP_TCP_LISTENERS` (2), `TINYPPP_UDP_SOCKETS` (2), `TINYPPP_UDP_RX_BUFFER` (1024) and `TINYPPP_UDP_TX_BUFFER` (576 bytes per `PPPUDP` object). With the defaults, TinyPPP uses about 13 KB of static RAM. See [RAM Requirements](ram.md) for the details.
+
 **Memory:** the engine uses about 1.8 KB per instance (a 1.5 KB receive frame buffer plus a 256 B transmit buffer). The buffers are on the hot path and small, so they stay in internal RAM. On ESP32, packet memory comes from lwIP and follows the core's PSRAM configuration.

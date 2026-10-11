@@ -8,7 +8,8 @@
  *   sudo pppd /dev/ttyACM0 115200 192.168.7.1:192.168.7.2 noauth local \
  *        nodetach novj noccp nodefaultroute ms-dns 8.8.8.8
  *
- * Works on ESP32 (all variants) and RP2040 / RP2350.
+ * Works on ESP32 (all variants), RP2040 / RP2350 and other 32-bit boards
+ * (e.g. Nano 33 IoT, MKR WiFi 1010, Nano RP2040 Connect, UNO R4).
  */
 #include <TinyPPP.h>
 

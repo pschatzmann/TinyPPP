@@ -15,6 +15,7 @@ The tests cover:
 - two engines negotiating with each other, then exchanging ping, large packets, terminate and reconnect
 - a scripted pppd-like peer: PAP, an IPCP Nak with DNS, a VJ reject, a CCP protocol-reject, echo, compressed frames and terminate
 - the passive/server role
+- the built-in TCP/IP stack between two instances: TCP connect, accept, a 20 KB transfer in both directions, close, connection refused and link loss; reuse of sockets; UDP; DNS
 
 `build/examples/desktop/ppp-pty` runs the engine on a pseudo terminal, so you can connect the real pppd to it and ping it:
 

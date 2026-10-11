@@ -8,17 +8,21 @@
  *   NetworkClient, NetworkServer, NetworkUDP, Network.onEvent()).
  * - RP2040 / RP2350 (Earle Philhower core): uses the TinyPPP engine on a
  *   lwIP netif and integrates with WiFiClient, WiFiServer, WiFiUDP, ...
- * - Desktop (Arduino-Emulator) or other cores: PPP engine with a raw IPv4
- *   packet API.
+ * - All other 32-bit cores, e.g. SAMD and mbed based WiFiNINA boards
+ *   (Nano 33 IoT, MKR WiFi 1010, Nano RP2040 Connect), UNO R4 and the desktop
+ *   (Arduino-Emulator): the TinyPPP engine with a small built-in TCP/IP stack
+ *   (TCP, UDP, ICMP echo, DNS) that provides PPPClient, PPPServer and PPPUDP.
  *
- * ESP32 and RP2040 provide the portable aliases PPPClient, PPPServer and
- * PPPUDP.
+ * On ESP32 and RP2040 PPPClient, PPPServer and PPPUDP are aliases for the
+ * native classes, so the same sketch builds on all platforms.
  */
 
-#if defined(ESP32)
+#if defined(ARDUINO_ARCH_AVR) || defined(ARDUINO_ARCH_MEGAAVR)
+#error "TinyPPP needs a 32-bit board (AVR does not have enough RAM)"
+#elif defined(ESP32)
 #include "tinyppp/TinyPPP_ESP32.h"
 #elif defined(ARDUINO_ARCH_RP2040) && !defined(ARDUINO_ARCH_MBED)
 #include "tinyppp/TinyPPP_RP2040.h"
 #else
-#include "tinyppp/TinyPPP_Desktop.h"
+#include "tinyppp/TinyPPP_Generic.h"
 #endif

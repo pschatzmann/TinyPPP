@@ -88,7 +88,8 @@ int main() {
   StdioDevice log;
   TinyPPP ppp;
   ppp.setLogger(log);
-  ppp.onStateChange([&](bool up) {
+  ppp.onStateChange([](bool up, void *ref) {
+    TinyPPP &ppp = *(TinyPPP *)ref;
     if (up) {
       printf("connected: local %s peer %s dns %s\n",
              ppp.localIP().toString().c_str(),
@@ -98,7 +99,7 @@ int main() {
       printf("disconnected\n");
     }
     fflush(stdout);
-  });
+  }, &ppp);
   ppp.begin(io);
 
   uint32_t start = millis();

@@ -30,6 +30,10 @@ using PPPClient = NetworkClient;
 using PPPServer = NetworkServer;
 using PPPUDP = NetworkUDP;
 
+/**
+ * @brief PPP network interface for ESP32 (arduino-esp32 3.x): ESP-IDF lwIP
+ * PPP via esp_netif, integrated as a NetworkInterface.
+ */
 class TinyPPP : public NetworkInterface {
  public:
   TinyPPP() = default;

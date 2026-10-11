@@ -25,16 +25,17 @@
 #define TINYPPP_RESTART_MS 2000
 #endif
 
+/// TinyPPP internals: PPP engine, HDLC framing and the IP stack
 namespace tinyppp {
 
-// PPP protocol numbers
+/// PPP protocol numbers
 static constexpr uint16_t PPP_IP = 0x0021;
 static constexpr uint16_t PPP_IPV6 = 0x0057;
 static constexpr uint16_t PPP_LCP = 0xC021;
 static constexpr uint16_t PPP_PAP = 0xC023;
 static constexpr uint16_t PPP_IPCP = 0x8021;
 
-// Control protocol codes
+/// Control protocol (LCP, IPCP) packet codes
 enum CPCode : uint8_t {
   CONF_REQ = 1,
   CONF_ACK = 2,
@@ -49,7 +50,7 @@ enum CPCode : uint8_t {
   DISCARD_REQ = 11,
 };
 
-// LCP options
+/// LCP configuration options
 enum LCPOption : uint8_t {
   LCP_MRU = 1,
   LCP_ACCM = 2,
@@ -59,7 +60,7 @@ enum LCPOption : uint8_t {
   LCP_ACFC = 8,
 };
 
-// IPCP options
+/// IPCP configuration options
 enum IPCPOption : uint8_t {
   IPCP_COMPRESSION = 2,
   IPCP_ADDRESS = 3,
@@ -88,6 +89,7 @@ enum class PPPPhase : uint8_t {
   Terminate,
 };
 
+/// Name of a phase (for logging)
 inline const char *toStr(PPPPhase p) {
   switch (p) {
     case PPPPhase::Dead: return "Dead";
@@ -103,6 +105,7 @@ inline const char *toStr(PPPPhase p) {
 /// IPv4 address in network byte order as stored in memory (same as lwIP)
 using ip4_t = uint32_t;
 
+/// Builds an address from its 4 bytes (a.b.c.d)
 inline ip4_t toIp4(uint8_t a, uint8_t b, uint8_t c, uint8_t d) {
   uint8_t v[4] = {a, b, c, d};
   ip4_t r;
@@ -110,16 +113,24 @@ inline ip4_t toIp4(uint8_t a, uint8_t b, uint8_t c, uint8_t d) {
   return r;
 }
 
-/// Statistics
+/// @brief Frame and packet counters of a PPPEngine
 struct PPPStats {
-  uint32_t rxFrames = 0;
-  uint32_t txFrames = 0;
-  uint32_t rxIP = 0;
-  uint32_t txIP = 0;
-  uint32_t rxDropped = 0;
-  uint32_t txErrors = 0;
+  uint32_t rxFrames = 0;   ///< received frames with a valid FCS
+  uint32_t txFrames = 0;   ///< sent frames
+  uint32_t rxIP = 0;       ///< received IPv4 packets
+  uint32_t txIP = 0;       ///< sent IPv4 packets
+  uint32_t rxDropped = 0;  ///< received frames that were dropped
+  uint32_t txErrors = 0;   ///< frames the output did not accept completely
 };
 
+/**
+ * @brief Portable PPP engine: LCP, PAP client and IPCP over an Arduino
+ * Stream.
+ *
+ * The engine has no IP stack: subclasses receive IPv4 packets in
+ * onIPv4Packet() and are notified about the link state with onLinkUp() and
+ * onLinkDown(). Call process() regularly to handle input and timers.
+ */
 class PPPEngine {
  public:
   virtual ~PPPEngine() = default;
@@ -251,7 +262,9 @@ class PPPEngine {
     _enc.begin(PPP_IP);
     return true;
   }
+  /// Adds data to the packet started with beginIPv4()
   void writeIPv4(const uint8_t *data, size_t len) { _enc.data(data, len); }
+  /// Sends the packet started with beginIPv4()
   bool endIPv4() {
     bool ok = _enc.end();
     _stats.txFrames++;
@@ -265,15 +278,23 @@ class PPPEngine {
 
   /// true when IPCP is open and IPv4 packets can be exchanged
   bool isUp() const { return _ipcp.state == CPState::Opened; }
+  /// true after start() until stop()
   bool isStarted() const { return _started; }
+  /// Current link phase
   PPPPhase phase() const { return _phase; }
+  /// Our IP address (0 if not negotiated yet)
   ip4_t localIP() const { return _ourIP; }
+  /// IP address of the peer
   ip4_t peerIP() const { return _peerIP; }
+  /// First DNS server received from the peer
   ip4_t dns1() const { return _dns1; }
+  /// Second DNS server received from the peer
   ip4_t dns2() const { return _dns2; }
   /// MTU we may use for sending (peer MRU)
   uint16_t mtu() const { return _peerMRU; }
+  /// Frame and packet counters
   const PPPStats &stats() const { return _stats; }
+  /// Number of received frames with a wrong FCS
   uint32_t fcsErrors() const { return _dec.fcsErrors(); }
 
  protected:
@@ -302,6 +323,7 @@ class PPPEngine {
 
  private:
   struct ControlProtocol {
+    explicit ControlProtocol(uint16_t p) : proto(p) {}
     uint16_t proto;
     CPState state = CPState::Initial;
     uint8_t id = 0;       // id of the last request we sent

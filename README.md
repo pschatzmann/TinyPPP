@@ -10,15 +10,17 @@ TinyPPP is a header-only Arduino library for IP networking with PPP (Point-to-Po
 |---|---|---|
 | ESP32, S2, S3, C3, C6, P4 (arduino-esp32 3.x) | Native ESP-IDF lwIP PPP through `esp_netif`, with `TinyPPP` as a `NetworkInterface` | `NetworkClient`, `NetworkServer`, `NetworkUDP`, `Network.onEvent(ARDUINO_EVENT_PPP_*)` |
 | RP2040 / RP2350 ([arduino-pico](https://github.com/earlephilhower/arduino-pico)) | TinyPPP engine on a lwIP netif | `WiFiClient`, `WiFiServer`, `WiFiUDP`, `HTTPClient`, ... |
-| Desktop: Linux, macOS ([Arduino-Emulator](https://github.com/pschatzmann/Arduino-Emulator)) | TinyPPP engine with a raw IPv4 packet API | – |
+| Other 32-bit boards, e.g. WiFiNINA boards (Nano 33 IoT, MKR WiFi 1010, Nano RP2040 Connect), UNO R4, Due, STM32 | TinyPPP engine with a small built-in TCP/IP stack (TCP, UDP, ICMP echo, DNS) | `PPPClient`, `PPPServer`, `PPPUDP` |
+| Desktop: Linux, macOS ([Arduino-Emulator](https://github.com/pschatzmann/Arduino-Emulator)) | Same as other boards, plus a raw IPv4 packet API | `PPPClient`, `PPPServer`, `PPPUDP` |
 
-On ESP32 and RP2040, `PPPClient`, `PPPServer` and `PPPUDP` are aliases for the native classes, so the same sketch builds on both platforms.
+On ESP32 and RP2040, `PPPClient`, `PPPServer` and `PPPUDP` are aliases for the native classes. On the other boards they are classes of the built-in stack. Either way, the same sketch builds on all platforms. AVR boards are not supported because they don't have enough RAM.
 
 ## Documentation
 
 - [Usage](docs/usage.md): example sketch and API
 - [Host Setup](docs/host-setup.md): running pppd on Linux or macOS, internet access via NAT
-- [Platform Notes](docs/platform-notes.md): ESP32, RP2040 / RP2350 and memory
+- [Platform Notes](docs/platform-notes.md): ESP32, RP2040 / RP2350, other 32-bit boards (e.g. WiFiNINA) and memory
+- [RAM Requirements](docs/ram.md): memory use of the built-in TCP/IP stack and how to reduce it
 - [Desktop Build and Tests](docs/desktop.md): building and testing with the Arduino-Emulator
 - [Testing Plan](docs/testing-plan.md): test levels, coverage gaps and the release checklist
 

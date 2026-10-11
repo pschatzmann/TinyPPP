@@ -6,7 +6,8 @@
  *        nodetach novj noccp nodefaultroute
  * and open http://192.168.7.2 in the browser.
  *
- * Works on ESP32 (all variants) and RP2040 / RP2350.
+ * Works on ESP32 (all variants), RP2040 / RP2350 and other 32-bit boards
+ * (e.g. Nano 33 IoT, MKR WiFi 1010, Nano RP2040 Connect, UNO R4).
  */
 #include <TinyPPP.h>
 
