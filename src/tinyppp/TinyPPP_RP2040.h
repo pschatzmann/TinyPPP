@@ -29,9 +29,9 @@ extern std::function<void(struct netif *)> _removeNetifCB;
 namespace tinyppp {
 
 /// Portable aliases for the network classes that work over PPP
-using PPPClient = WiFiClient;
-using PPPServer = WiFiServer;
-using PPPUDP = WiFiUDP;
+using PPPClient_RP2040 = WiFiClient;
+using PPPServer_RP2040 = WiFiServer;
+using PPPUDP_RP2040 = WiFiUDP;
 
 /**
  * @brief PPP network interface for RP2040 / RP2350 (arduino-pico): the
@@ -259,6 +259,5 @@ class TinyPPP_RP2040 : public LwipIntf, protected PPPEngine {
 };
 
 /// The PPP network interface of this platform
-using TinyPPP = TinyPPP_RP2040;
 
 }  // namespace tinyppp

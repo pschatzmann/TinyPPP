@@ -4,10 +4,10 @@
  * WiFiNINA boards (Nano 33 IoT, MKR WiFi 1010, Nano RP2040 Connect), the
  * desktop (Arduino-Emulator) and other cores.
  *
- * The PPP engine is combined with the small TinyPPP IPStack, so PPPClient,
- * PPPServer and PPPUDP work over the link. Received IPv4 packets that are not
- * handled by the stack can be processed with onReceive(), and raw packets can
- * be sent with send().
+ * The PPP engine is combined with the small TinyPPP IPStack, so
+ * PPPClient_Generic, PPPServer_Generic and PPPUDP_Generic work over the link.
+ * Received IPv4 packets that are not handled by the stack can be processed
+ * with onReceive(), and raw packets can be sent with send().
  *
  * There is no background task: the link is processed by all socket methods
  * and by loop(). Call loop() regularly when the sketch does not use a socket
@@ -133,6 +133,5 @@ class TinyPPP_Generic : public PPPEngine, public IPStack {
 };
 
 /// The PPP network interface of this platform
-using TinyPPP = TinyPPP_Generic;
 
 }  // namespace tinyppp

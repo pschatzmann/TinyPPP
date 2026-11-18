@@ -22,14 +22,14 @@ namespace tinyppp {
  *
  * Copies refer to the same connection; it is closed by stop() only.
  */
-class PPPClient : public Client {
+class PPPClient_Generic : public Client {
  public:
   /// Client on the default stack (the first TinyPPP instance)
-  PPPClient() = default;
+  PPPClient_Generic() = default;
   /// Client on the indicated stack
-  explicit PPPClient(IPStack &stack) : _stack(&stack) {}
-  /// Client for an existing socket (used by PPPServer)
-  PPPClient(IPStack *stack, int sock)
+  explicit PPPClient_Generic(IPStack &stack) : _stack(&stack) {}
+  /// Client for an existing socket (used by PPPServer_Generic)
+  PPPClient_Generic(IPStack *stack, int sock)
       : _stack(stack), _sock(sock), _gen(stack->tcpGen(sock)) {}
 
   /// Connects to the address and port: returns 1 on success
@@ -105,11 +105,11 @@ class PPPClient : public Client {
   operator bool() override { return valid(); }
 
   /// true if both refer to the same connection
-  bool operator==(const PPPClient &other) const {
+  bool operator==(const PPPClient_Generic &other) const {
     return _sock == other._sock && _gen == other._gen;
   }
   /// true if they refer to different connections
-  bool operator!=(const PPPClient &other) const { return !(*this == other); }
+  bool operator!=(const PPPClient_Generic &other) const { return !(*this == other); }
 
   /// Address of the peer
   IPAddress remoteIP() {
@@ -141,12 +141,12 @@ class PPPClient : public Client {
 };
 
 /// @brief TCP server over PPP: used like WiFiServer or EthernetServer
-class PPPServer : public Server {
+class PPPServer_Generic : public Server {
  public:
   /// Server on the default stack (the first TinyPPP instance)
-  explicit PPPServer(uint16_t port = 80) : _port(port) {}
+  explicit PPPServer_Generic(uint16_t port = 80) : _port(port) {}
   /// Server on the indicated stack
-  PPPServer(uint16_t port, IPStack &stack)
+  PPPServer_Generic(uint16_t port, IPStack &stack)
       : _port(port), _stack(&stack) {}
 
   /// Starts listening
@@ -167,15 +167,15 @@ class PPPServer : public Server {
   }
 
   /// Returns a new connection (or an invalid client)
-  PPPClient accept() {
+  PPPClient_Generic accept() {
     int s = stack() ? stack()->tcpAccept(_port, false) : -1;
-    return s < 0 ? PPPClient() : PPPClient(stack(), s);
+    return s < 0 ? PPPClient_Generic() : PPPClient_Generic(stack(), s);
   }
 
   /// Returns a connection that has data available (or an invalid client)
-  PPPClient available() {
+  PPPClient_Generic available() {
     int s = stack() ? stack()->tcpAccept(_port, true) : -1;
-    return s < 0 ? PPPClient() : PPPClient(stack(), s);
+    return s < 0 ? PPPClient_Generic() : PPPClient_Generic(stack(), s);
   }
 
   /// Writes one byte to all connected clients
@@ -203,15 +203,15 @@ class PPPServer : public Server {
 };
 
 /// @brief UDP socket over PPP: used like WiFiUDP or EthernetUDP
-class PPPUDP : public UDP {
+class PPPUDP_Generic : public UDP {
  public:
   /// UDP on the default stack (the first TinyPPP instance)
-  PPPUDP() = default;
+  PPPUDP_Generic() = default;
   /// UDP on the indicated stack
-  explicit PPPUDP(IPStack &stack) : _stack(&stack) {}
-  ~PPPUDP() { stop(); }
-  PPPUDP(const PPPUDP &) = delete;
-  PPPUDP &operator=(const PPPUDP &) = delete;
+  explicit PPPUDP_Generic(IPStack &stack) : _stack(&stack) {}
+  ~PPPUDP_Generic() { stop(); }
+  PPPUDP_Generic(const PPPUDP_Generic &) = delete;
+  PPPUDP_Generic &operator=(const PPPUDP_Generic &) = delete;
 
   /// Opens the socket on the port (0: any port): returns 1 on success
   uint8_t begin(uint16_t port) override {

@@ -28,9 +28,9 @@
 namespace tinyppp {
 
 /// Portable aliases for the network classes that work over PPP
-using PPPClient = NetworkClient;
-using PPPServer = NetworkServer;
-using PPPUDP = NetworkUDP;
+using PPPClient_ESP32 = NetworkClient;
+using PPPServer_ESP32 = NetworkServer;
+using PPPUDP_ESP32 = NetworkUDP;
 
 /**
  * @brief PPP network interface for ESP32 (arduino-esp32 3.x): ESP-IDF lwIP
@@ -301,6 +301,5 @@ class TinyPPP_ESP32 : public NetworkInterface {
 };
 
 /// The PPP network interface of this platform
-using TinyPPP = TinyPPP_ESP32;
 
 }  // namespace tinyppp

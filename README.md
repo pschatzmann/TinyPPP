@@ -6,14 +6,14 @@
 
 TinyPPP is a header-only Arduino library for IP networking with PPP (Point-to-Point Protocol). It runs over any Arduino `Stream`, such as USB serial, a hardware UART or anything else that implements `Stream`. The library plugs into the network API of the Arduino core, so the usual client, server and UDP classes work over the PPP link.
 
-| Platform | Implementation | Network classes |
+| Platform | Implementation (class names) | Network classes |
 |---|---|---|
-| ESP32, S2, S3, C3, C6, P4 (arduino-esp32 3.x) | Native ESP-IDF lwIP PPP through `esp_netif`, with `TinyPPP` as a `NetworkInterface` | `NetworkClient`, `NetworkServer`, `NetworkUDP`, `Network.onEvent(ARDUINO_EVENT_PPP_*)` |
-| RP2040 / RP2350 ([arduino-pico](https://github.com/earlephilhower/arduino-pico)) | TinyPPP engine on a lwIP netif | `WiFiClient`, `WiFiServer`, `WiFiUDP`, `HTTPClient`, ... |
-| Other 32-bit boards, e.g. WiFiNINA boards (Nano 33 IoT, MKR WiFi 1010, Nano RP2040 Connect), UNO R4, Due, STM32 | TinyPPP engine with a small built-in TCP/IP stack (TCP, UDP, ICMP echo, DNS) | `PPPClient`, `PPPServer`, `PPPUDP` |
-| Desktop: Linux, macOS ([Arduino-Emulator](https://github.com/pschatzmann/Arduino-Emulator)) | Same as other boards, plus a raw IPv4 packet API | `PPPClient`, `PPPServer`, `PPPUDP` |
+| ESP32, S2, S3, C3, C6, P4 (arduino-esp32 3.x) | Native ESP-IDF lwIP PPP through `esp_netif`, `TinyPPP_ESP32` as a `NetworkInterface` | `PPPClient_ESP32` (`NetworkClient`), `PPPServer_ESP32`, `PPPUDP_ESP32`, `Network.onEvent(ARDUINO_EVENT_PPP_*)` |
+| RP2040 / RP2350 ([arduino-pico](https://github.com/earlephilhower/arduino-pico)) | `TinyPPP_RP2040`: TinyPPP engine on a lwIP netif | `PPPClient_RP2040` (`WiFiClient`), `PPPServer_RP2040`, `PPPUDP_RP2040`, `HTTPClient`, ... |
+| Other 32-bit boards, e.g. WiFiNINA boards (Nano 33 IoT, MKR WiFi 1010, Nano RP2040 Connect), UNO R4, Due, STM32 | `TinyPPP_Generic`: TinyPPP engine with a small built-in TCP/IP stack (TCP, UDP, ICMP echo, DNS) | `PPPClient_Generic`, `PPPServer_Generic`, `PPPUDP_Generic` |
+| Desktop: Linux, macOS ([Arduino-Emulator](https://github.com/pschatzmann/Arduino-Emulator)) | `TinyPPP_Generic`, plus a raw IPv4 packet API | `PPPClient_Generic`, `PPPServer_Generic`, `PPPUDP_Generic` |
 
-On ESP32 and RP2040, `PPPClient`, `PPPServer` and `PPPUDP` are aliases for the native classes. On the other boards they are classes of the built-in stack. Either way, the same sketch builds on all platforms. AVR boards are not supported because they don't have enough RAM.
+Every implementation is available on every board, so it can be selected by its class name (`TinyPPP_Generic`, `PPPClient_Generic`, ...). Without a suffix, `TinyPPP`, `PPPClient`, `PPPServer` and `PPPUDP` refer to the implementation of the current platform (the native one on ESP32 and RP2040, the generic one elsewhere), so the same sketch builds on all platforms. AVR is rejected by the default `TinyPPP.h` because the generic stack does not fit in its RAM.
 
 ## Documentation
 

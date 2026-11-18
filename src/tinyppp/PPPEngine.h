@@ -14,6 +14,7 @@
 #include <string.h>
 
 #include <Arduino.h>
+#include <IPAddress.h>
 
 #include "HDLC.h"
 

@@ -15,11 +15,11 @@ The stream is polled by the core's lwIP background task (default every 20 ms). F
 - UDP, ICMP echo replies and a DNS resolver (A records)
 - no IP fragmentation, no IPv6, no multicast
 
-On WiFiNINA boards, `WiFiClient` and the other WiFiNINA classes keep using WiFi. Over PPP you use `PPPClient`, `PPPServer` and `PPPUDP`. There is no background task: every socket method processes the link. If the sketch doesn't use a socket for a while, call `ppp.loop()`.
+On WiFiNINA boards, `WiFiClient` and the other WiFiNINA classes keep using WiFi. Over PPP you use `PPPClient`, `PPPServer` and `PPPUDP` (or the explicit `PPPClient_Generic`, `PPPServer_Generic` and `PPPUDP_Generic`). There is no background task: every socket method processes the link. If the sketch doesn't use a socket for a while, call `ppp.loop()`.
 
-The sizes can be changed with defines set before `#include <TinyPPP.h>` (defaults in brackets): `TINYPPP_TCP_SOCKETS` (4), `TINYPPP_TCP_RX_BUFFER` and `TINYPPP_TCP_TX_BUFFER` (1024 bytes per socket), `TINYPPP_TCP_LISTENERS` (2), `TINYPPP_UDP_SOCKETS` (2), `TINYPPP_UDP_RX_BUFFER` (1024) and `TINYPPP_UDP_TX_BUFFER` (576 bytes per `PPPUDP` object). With the defaults, TinyPPP uses about 13 KB of static RAM. See [RAM Requirements](ram.md) for the details.
+The sizes can be changed with defines set before `#include <TinyPPP.h>` (defaults in brackets): `TINYPPP_TCP_SOCKETS` (4), `TINYPPP_TCP_RX_BUFFER` and `TINYPPP_TCP_TX_BUFFER` (1024 bytes per socket), `TINYPPP_TCP_LISTENERS` (2), `TINYPPP_UDP_SOCKETS` (2), `TINYPPP_UDP_RX_BUFFER` (1024) and `TINYPPP_UDP_TX_BUFFER` (576 bytes per `PPPUDP_Generic` object). With the defaults, TinyPPP uses about 13 KB of static RAM. See [RAM Requirements](ram.md) for the details.
 
-**Generic stack on ESP32 and RP2040:** define `PPP_PREFER_GENERIC` before `#include <TinyPPP.h>` (or as a build flag) to use the generic implementation instead of the native one. `PPPClient`, `PPPServer` and `PPPUDP` are then the classes of the built-in stack. They are separate from the core's network classes, so `WiFiClient`, `NetworkClient` and `Network.onEvent()` don't work over PPP. As on the other generic boards, the link is processed by the socket methods and `ppp.loop()`; there is no background task.
+**Generic stack on ESP32 and RP2040:** the generic implementation is always available, under the names `TinyPPP_Generic`, `PPPClient_Generic`, `PPPServer_Generic` and `PPPUDP_Generic`. Define `PPP_PREFER_GENERIC` before `#include <TinyPPP.h>` (or as a build flag) to make it the default `TinyPPP`/`PPPClient`/`PPPServer`/`PPPUDP` instead of the native one. They are separate from the core's network classes, so `WiFiClient`, `NetworkClient` and `Network.onEvent()` don't work over PPP. As on the other generic boards, the link is processed by the socket methods and `ppp.loop()`; there is no background task.
 
 The memory impact, measured with the `WebServer` example (flash and static RAM):
 

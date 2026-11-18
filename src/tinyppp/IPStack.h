@@ -18,6 +18,7 @@
 #include <string.h>
 
 #include <Arduino.h>
+#include <IPAddress.h>
 
 #ifndef TINYPPP_TCP_SOCKETS
 #define TINYPPP_TCP_SOCKETS 4
@@ -189,8 +190,8 @@ enum class TCPState : uint8_t {
  * platforms without lwIP.
  *
  * The link layer (e.g. TinyPPP) derives from this class and implements the
- * ip* methods. The socket methods are used by PPPClient, PPPServer and
- * PPPUDP; sockets are identified by their index in the socket table.
+ * ip* methods. The socket methods are used by PPPClient_Generic, PPPServer_Generic and
+ * PPPUDP_Generic; sockets are identified by their index in the socket table.
  */
 class IPStack {
  public:
@@ -253,7 +254,7 @@ class IPStack {
     return false;
   }
 
-  // ---- TCP socket API (used by PPPClient / PPPServer) ----
+  // ---- TCP socket API (used by PPPClient_Generic / PPPServer_Generic) ----
 
   /// Opens a connection: returns the socket number or -1
   int tcpConnect(ip4_t ip, uint16_t port, uint32_t timeoutMs) {
@@ -443,7 +444,7 @@ class IPStack {
     return result;
   }
 
-  // ---- UDP socket API (used by PPPUDP) ----
+  // ---- UDP socket API (used by PPPUDP_Generic) ----
 
   /// Opens a UDP socket on the port (0: ephemeral): returns it or -1
   int udpOpen(uint16_t port) {

@@ -1,6 +1,7 @@
 // Desktop unit tests for TinyPPP (run with ctest)
 #include <stdio.h>
 
+#include <type_traits>
 #include <vector>
 
 #include "LoopbackStream.h"
@@ -554,6 +555,49 @@ static void testUdpAndDns() {
   CHECK(!p.client.hostByName("bad..name", ip, 500));
 }
 
+/// The default names follow the implementation of the platform; on the
+/// desktop that is the generic one. The explicit names work everywhere.
+static void testGenericNames() {
+  printf("testGenericNames\n");
+  static_assert(std::is_same<TinyPPP, TinyPPP_Generic>::value,
+                "TinyPPP must be the generic implementation on the desktop");
+  static_assert(std::is_same<PPPClient, PPPClient_Generic>::value,
+                "PPPClient must be PPPClient_Generic on the desktop");
+  static_assert(std::is_same<PPPServer, PPPServer_Generic>::value,
+                "PPPServer must be PPPServer_Generic on the desktop");
+  static_assert(std::is_same<PPPUDP, PPPUDP_Generic>::value,
+                "PPPUDP must be PPPUDP_Generic on the desktop");
+
+  // TCP with the explicit names
+  LinkedPair p;
+  CHECK(p.begin());
+  PPPServer_Generic listener(80, p.server);
+  listener.begin();
+  CHECK((bool)listener);
+  PPPClient_Generic c(p.client);
+  CHECK(c.connect(IPAddress(10, 0, 0, 1), 80) == 1);
+  PPPClient_Generic s;
+  CHECK(runUntil([&] { return (bool)(s = listener.accept()); },
+                 {&p.server, &p.client}));
+  CHECK(c.write((const uint8_t *)"hello", 5) == 5);
+  char buf[6] = {0};
+  CHECK(runUntil([&] { return s.available() >= 5; }, {&p.server, &p.client}));
+  CHECK(s.read((uint8_t *)buf, 5) == 5);
+  CHECK(strcmp(buf, "hello") == 0);
+
+  // UDP with the explicit names
+  PPPUDP_Generic echo(p.server), u(p.client);
+  CHECK(echo.begin(7) == 1);
+  CHECK(u.begin(5000) == 1);
+  CHECK(u.beginPacket(IPAddress(10, 0, 0, 1), 7) == 1);
+  u.print("ping");
+  CHECK(u.endPacket() == 1);
+  int len = 0;
+  CHECK(runUntil([&] { return (len = echo.parsePacket()) > 0; },
+                 {&p.server, &p.client}));
+  CHECK(len == 4);
+}
+
 int main() {
   testFcs();
   testHdlc();
@@ -563,6 +607,7 @@ int main() {
   testTcp();
   testServerReset();
   testUdpAndDns();
+  testGenericNames();
   if (failures) {
     printf("%d check(s) FAILED\n", failures);
     return 1;
