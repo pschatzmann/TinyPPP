@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['host_20setup_0',['Host Setup',['../md_docs_2host-setup.html',1,'']]]
+  ['add_0',['Cases to add',['../md_docs_2testing.html#autotoc_md14',1,'']]],
+  ['and_20tests_1',['Desktop Build and Tests',['../md_docs_2desktop.html',1,'']]],
+  ['api_2',['API',['../md_docs_2usage.html#autotoc_md23',1,'']]]
 ];

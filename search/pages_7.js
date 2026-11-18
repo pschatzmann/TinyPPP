@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['platform_20notes_0',['Platform Notes',['../md_docs_2platform-notes.html',1,'']]]
+  ['desktop_20build_20and_20tests_0',['Desktop Build and Tests',['../md_docs_2desktop.html',1,'']]],
+  ['documentation_1',['Documentation',['../index.html#autotoc_md1',1,'']]]
 ];
